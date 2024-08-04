@@ -1,4 +1,6 @@
 defmodule Sandbox do
+  # creating a struct
+  defstruct(username: "", email: "", age: nil)
   @moduledoc """
   Just playing around.
   """
@@ -18,10 +20,11 @@ defmodule Sandbox do
 
   def patternMatching() do
     a = 1
-    # ^a = 2 - Returns match error
-    a = 2  # ignores immuatablity rule
+    [1, ^a, 3] = [1, 1, 3]
+    # [1, ^a, 3] = [1, 2, 3]    # This throws error, ^ won't let you redefine 'a'
+    [1, a, 3] = [1, 2, 3]       # This is fine
 
-    IO.puts("A is: #{a}")
+    IO.puts(a)
   end
 
   @doc"""
@@ -87,15 +90,63 @@ defmodule Sandbox do
     IO.puts(t)
 
     # Tuples & Keyword lists
-    
+    {a, b} = {1, 2}
+    IO.puts(a)
 
+    {:reply, msg, state} = {:reply, "Some message", ["some", "state"]}
+    IO.puts(msg)
+    IO.puts(state)
 
+    # Keyword list - key/val pair where keys are atoms
+    data = [a: 1, b: 2]
+    IO.puts(data[:a])             # Keys are saved as atoms
+
+    # Maps - key/val pairs with many data types
+    my_map = %{a: 1, b: 2, c: 3}
+    %{a: first, b: second, c: third} = my_map
+    IO.puts(first)
+
+    %{b: second} = my_map         # Extracting value from map when keys are atoms
+    IO.puts(second)
+    IO.puts(my_map.b)
+
+    map2 = %{"a" => 1, "b" => 2, "c" => 3}        # Non-atom keys use => notation
+    %{"c" => c} = map2
+    IO.puts(c)
+
+    map2 = %{map2 | "c" => 4}                     # Updating values (non-atom keys)
+    my_map = %{my_map | c: 4}                     # Updating values (atoms keys)
+    %{"c" => c} = map2
+    IO.puts(c)
+
+    # Structs
+    user = %Sandbox{username: "Ryan", email: "test@example.com", age: 24}
+    IO.puts(user.email)
+
+    ^user = %{user | age: 25}                      # Updating struct values
+    IO.puts(user.age)
   end
+
+  def flowControl() do
+    list = [1,2,3]
+
+    result = case Enum.at(list, 2) do
+      1 -> "Case 1"
+      3 -> "Case 2"
+      _ -> "Default case"
+    end
+
+    IO.puts(result)
+  end
+
+
 end
 
 # Run with `elixir sandbox.exs`
 # Compile to BEAM btyecode with `elixirc sandbox.exs`
+
 # Sandbox.helloWorld()
 # Sandbox.countTo(0, 3)
 # Sandbox.patternMatching()
-Sandbox.dataTypes()
+# Sandbox.dataTypes()
+Sandbox.flowControl()
