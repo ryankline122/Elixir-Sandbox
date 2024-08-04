@@ -130,15 +130,39 @@ defmodule Sandbox do
   def flowControl() do
     list = [1,2,3]
 
-    result = case Enum.at(list, 2) do
+    result = case Enum.at(list, 2) do              # Equivalent to switch statment
       1 -> "Case 1"
       3 -> "Case 2"
       _ -> "Default case"
     end
 
     IO.puts(result)
-  end
 
+    user = %Sandbox{username: "Ryan", email: "test@example.com", age: 24}
+    result = case user do
+      %{username: "Ryan"} -> "User is Ryan"
+      %{username: "Jake"} -> "User is Jake"
+      _ -> "User is #{user.username}"
+    end
+
+    IO.puts(result)
+
+    # Cond - Switch statments for conditionals
+    result = cond do
+      user.username == "Ryan" -> "User is known"
+      user.username == "Jake" -> "User is known"
+      true -> "User is unknown"
+    end
+
+    IO.puts(result)
+
+    # If/else - typically handled by recursion
+    if true do
+      "This is true"
+    else
+      "This is false"
+    end
+  end
 
 end
 
