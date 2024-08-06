@@ -13,5 +13,4 @@ defmodule SampleProject.Recursion.SumDigits do
   def sum_tail_rec(num, accum) do
     sum_tail_rec(num - 1, accum + num)
   end
-
 end
