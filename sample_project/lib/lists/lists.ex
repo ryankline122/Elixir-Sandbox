@@ -30,4 +30,27 @@ defmodule SampleProject.Lists do
   def map(elements, func, accum \\ [])
   def map([], _, accum), do: accum |> rev_ll()
   def map([h | t], func, accum), do: map(t, func, [func.(h) | accum])
+
+  # Concat
+  def concat(list1, list2, accum \\ [])
+  def concat([], [], accum), do: accum |> rev_ll()
+  def concat([h1 | t1], [], accum), do: concat(t1, [], [h1 | accum])
+  def concat([], [h2 | t2], accum), do: concat([], t2, [h2 | accum])
+  def concat([h1 | t1], [h2 | t2], accum), do: concat(t1, [h2 | t2], [h1 | accum])
+
+  #[1,2,3], [4,5,6]
+  #[3,2,1], [4,5,6]
+  #[2,1], [3,4,5,6]
+  #[1], [2,3,4,5,6]
+  #[], [1,2,3,4,5,6]
+  def concat_v2(src, dst), do: concat_func(src |> rev_ll(), dst)
+  defp concat_func([], dst), do: dst
+  defp concat_func([h | t], dst), do: concat_func(t, [h | dst])
+
+  # Flat Map
+  def flat_map(list, func, accum \\ [])
+  def flat_map([], _, accum), do: accum
+  def flat_map([h | t], func, accum) do
+    flat_map(t, func, concat_v2(accum, func.(h)))
+  end
 end
