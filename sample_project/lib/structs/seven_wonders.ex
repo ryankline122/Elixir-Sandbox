@@ -28,4 +28,12 @@ defmodule SampleProject.Structs.SevenWonders do
   def filter_by_country(country) do
     Enum.filter(all, fn x -> x.country == country end)
   end
+
+  def name_country_list() do
+    Enum.reduce(all(), [], (fn x, accum -> [[x.name, x.country] | accum] end))
+  end
+
+  def for_compresion() do
+    for %{name: name} <- all(), do: name
+  end
 end
